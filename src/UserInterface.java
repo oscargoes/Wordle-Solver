@@ -18,7 +18,18 @@ public class UserInterface {
 		int tries = 0;
 		Scanner in = new Scanner(System.in);  
 		while (tries < 6) {
+			if (!game.guessAble()) {
+				System.out.println("Uh oh.....");
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println("I'm out of words. You're on your own.");
+				System.exit(0);
+			}
 			System.out.println("Best guess: " + game.attemptGuess());
+			tries++;
 			System.out.println("What did wordle return? Enter 5 character string with G for green, Y for yellow, B for black.");
 			String current = in.next().toUpperCase();
 			while (!isValid(current)) {
@@ -29,6 +40,23 @@ public class UserInterface {
 			for (int i = 0; i < 5; i++) {
 				if (current.charAt(i) == 'G') {
 					gCount++;
+				}
+			}
+			if (gCount == 4 && tries == 4) {
+				//System.out.println("Activating special case");
+				System.out.println("Best guess: " + game.specialUpdateManager(current));
+				tries++;
+				System.out.println("What did wordle return? Enter 5 character string with G for green, Y for yellow, B for black.");
+				current = in.next().toUpperCase();
+				while (!isValid(current)) {
+					System.out.println("What did wordle return? Enter 5 character string with G for green, Y for yellow, B for black.");
+					current = in.next().toUpperCase();
+				}
+				gCount = 0;
+				for (int i = 0; i < 5; i++) {
+					if (current.charAt(i) == 'G') {
+						gCount++;
+					}
 				}
 			}
 			if (gCount == 5) {
@@ -59,11 +87,12 @@ public class UserInterface {
 				System.out.println("Made by Arya Agiwal and Oscar Goes :)");
 				System.exit(0);
 			}
+			System.out.println(game);
 			game.updateManager(current);
+			System.out.println(game);
 			
 			//DEBUGGING
 			//System.out.println(game);
-			tries++;
 		}
 		if (tries == 6) {
 			System.out.println("Do you want to imagine something?");
