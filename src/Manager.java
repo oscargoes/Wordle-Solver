@@ -13,6 +13,7 @@ import java.util.TreeSet;
 
 public class Manager {
 	//TODO: account for when wordle answer has repeats
+
 	//constants
 	private static final String WORD_LIST = "possible.txt";
 	private static final Set<String> dictionary = getDictionary();
@@ -84,7 +85,7 @@ public class Manager {
 		}
 		return currentList;
 	}
-	
+
 	private static int calcWeight(String word) {
 		int weight = 0;
 		Set<Character> chars = new HashSet<>();
@@ -96,10 +97,6 @@ public class Manager {
 		weight /= 5;
 		return weight;
 	}
-	
-	
-	
-	
 	
 	private void updateGreen(int index) {
 		char c = lastGuessed.charAt(index);
@@ -192,7 +189,7 @@ public class Manager {
 	public void updateManager(String result) {
 		
 		HashMap<Character, Integer> duplicates = new HashMap<>();
-		
+		System.out.println("Updating and last guessed is: " + lastGuessed + " while result is: " + result);
 		for (int c = 0; c < 5; c++) {
 			if (result.charAt(c) == 'G') {
 				updateGreen(c);
@@ -229,7 +226,6 @@ public class Manager {
 		}
 	}
 	
-	
 	public String toString() {
 		StringBuilder print = new StringBuilder("");
 		for (String word : currentWords.keySet()) {
@@ -239,5 +235,58 @@ public class Manager {
 			print.append("\n");
 		}
 		return print.toString();
+	}
+
+	public boolean guessAble () {
+		return currentWords.size() > 0;
+	}
+
+	public String specialUpdateManager (String result) {
+		updateManager(result);
+		int varChar = 0;
+		for (int c = 0; c < 5; c++) {
+			if (result.charAt(c) == 'B') {
+				varChar = c;
+			}
+		}
+
+		//System.out.println(currentWords);
+		Set<Character> temp = new HashSet<>();
+		for (String word : currentWords.keySet()) {
+			temp.add(word.charAt(varChar));
+		}
+		//System.out.println(temp);
+		//Making a new set of all words
+		TreeMap<String, Integer> emergencySet = getWeights(dictionary);
+		TreeMap<String, Integer> specialSet = new TreeMap<>();
+		for (String word : emergencySet.keySet()) {
+			int weight = 0;
+			Set<Character> localTemp = new HashSet<>();
+			for (int i = 0; i < 5; i++) {
+				if (temp.contains(word.charAt(i)) && !localTemp.contains(word.charAt(i))) {
+					weight++;
+					localTemp.add(word.charAt(i));
+				}
+			}
+			if (weight != 0) {
+				specialSet.put(word,weight);
+			}
+		}
+		//System.out.println(specialSet);
+
+		int max = 0;
+		String bestGuess = "";
+		for (String word : specialSet.keySet()) {
+			int wordWeight = specialSet.get(word);
+			if (wordWeight > max) {
+				max = wordWeight;
+				bestGuess = word;
+			}
+		}
+		lastGuessed = bestGuess;
+		currentWords.remove(bestGuess);
+		guessesDone++;
+		System.out.println(bestGuess);
+		return bestGuess;
 	}
 }
