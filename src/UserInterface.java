@@ -42,7 +42,7 @@ public class UserInterface {
 					gCount++;
 				}
 			}
-			if (gCount == 4 && tries == 4) {
+			if (gCount == 4 && tries <= 4) {
 				//System.out.println("Activating special case");
 				System.out.println("Best guess: " + game.specialUpdateManager(current));
 				tries++;
@@ -60,7 +60,7 @@ public class UserInterface {
 				}
 			}
 			if (gCount == 5) {
-				System.out.println("What's there to be happy about?");
+				System.out.println("\nWhat's there to be happy about?");
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {

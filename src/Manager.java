@@ -155,7 +155,7 @@ public class Manager {
 					curCount++;
 				}
 			}
-			if (curCount == count) {
+			if (curCount >= count) {
 				updated.put(word, currentWords.get(word));
 			}
 		}
