@@ -3,20 +3,20 @@ import java.util.*;
 //Created by Arya Agiwal and Oscar Goes 2022
 
 public class UserInterface {
-	
+
 	public static void main(String[] args) {
 		Manager game = new Manager();
 		System.out.println("Welcome to the wordle solver.\n");
-		
-		//DEBUG
-		//System.out.println(game);
-		//System.out.println("Best guess: " + game.attemptGuess());
-		//System.out.println(game);
-		//game.updateManager("BGYGB");
-		//System.out.println(game);
-		
+
+		// DEBUG
+		// System.out.println(game);
+		// System.out.println("Best guess: " + game.attemptGuess());
+		// System.out.println(game);
+		// game.updateManager("BGYGB");
+		// System.out.println(game);
+
 		int tries = 0;
-		Scanner in = new Scanner(System.in);  
+		Scanner in = new Scanner(System.in);
 		while (tries < 6) {
 			if (!game.guessAble()) {
 				System.out.println("Uh oh.....");
@@ -30,10 +30,12 @@ public class UserInterface {
 			}
 			System.out.println("Best guess: " + game.attemptGuess());
 			tries++;
-			System.out.println("What did wordle return? Enter 5 character string with G for green, Y for yellow, B for black.");
+			System.out.println(
+					"What did wordle return? Enter 5 character string with G for green, Y for yellow, B for black.");
 			String current = in.next().toUpperCase();
 			while (!isValid(current)) {
-				System.out.println("What did wordle return? Enter 5 character string with G for green, Y for yellow, B for black.");
+				System.out.println(
+						"What did wordle return? Enter 5 character string with G for green, Y for yellow, B for black.");
 				current = in.next().toUpperCase();
 			}
 			int gCount = 0;
@@ -43,13 +45,15 @@ public class UserInterface {
 				}
 			}
 			if (gCount == 4 && tries <= 4) {
-				//System.out.println("Activating special case");
+				// System.out.println("Activating special case");
 				System.out.println("Best guess: " + game.specialUpdateManager(current));
 				tries++;
-				System.out.println("What did wordle return? Enter 5 character string with G for green, Y for yellow, B for black.");
+				System.out.println(
+						"What did wordle return? Enter 5 character string with G for green, Y for yellow, B for black.");
 				current = in.next().toUpperCase();
 				while (!isValid(current)) {
-					System.out.println("What did wordle return? Enter 5 character string with G for green, Y for yellow, B for black.");
+					System.out.println(
+							"What did wordle return? Enter 5 character string with G for green, Y for yellow, B for black.");
 					current = in.next().toUpperCase();
 				}
 				gCount = 0;
@@ -90,9 +94,9 @@ public class UserInterface {
 			System.out.println(game);
 			game.updateManager(current);
 			System.out.println(game);
-			
-			//DEBUGGING
-			//System.out.println(game);
+
+			// DEBUGGING
+			// System.out.println(game);
 		}
 		if (tries == 6) {
 			System.out.println("Do you want to imagine something?");
@@ -105,7 +109,7 @@ public class UserInterface {
 		}
 		in.close();
 	}
-	
+
 	private static boolean isValid(String current) {
 		if (current.length() != 5) {
 			return false;
@@ -117,5 +121,5 @@ public class UserInterface {
 		}
 		return true;
 	}
-	
+
 }
