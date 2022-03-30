@@ -8,13 +8,16 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-//Created by Arya Agiwal and Oscar Goes 2022
+/*
+ *  Created by Arya Agiwal and Oscar Goes 2022
+ */
 
 public class Manager {
 
 	// constants
 	private static final String WORD_LIST = "possible.txt";
 	private static final Set<String> dictionary = getDictionary();
+	// Letter position frequencies obtained by Rameez Kakodker (GitHub User: medicantBias117)
 	private static final int[][] POS_FREQ = {
 			{737,  2263,  1236,  1074,  680 },
 			{909,  81,	  335,   243,   59  },
@@ -57,6 +60,10 @@ public class Manager {
 	}
 
 	// helper methods
+	
+	/*
+	 * Creates the initial word dictionary used by the program
+	 */
 	private static Set<String> getDictionary() {
 		Set<String> dictionary = new TreeSet<>();
 		try {
@@ -75,6 +82,9 @@ public class Manager {
 		return Collections.unmodifiableSet(dictionary);
 	}
 
+	/*
+	 * Assigns a weight to each word in the dictionary
+	 */
 	private static TreeMap<String, Integer> getWeights(Set<String> dict) {
 		TreeMap<String, Integer> currentList = new TreeMap<>();
 		for (String temp : dict) {
@@ -83,6 +93,9 @@ public class Manager {
 		return currentList;
 	}
 
+	/*
+	 * Calculates the weight of a word based on letter position frequencies
+	 */
 	private static int calcWeight(String word) {
 		int weight = 0;
 		Set<Character> chars = new HashSet<>();
@@ -95,6 +108,9 @@ public class Manager {
 		return weight;
 	}
 
+	/*
+	 * Removes all words that do not have the correct character at the inputed index
+	 */
 	private void updateGreen(int index) {
 		char c = lastGuessed.charAt(index);
 		TreeMap<String, Integer> updated = new TreeMap<>();
@@ -106,6 +122,9 @@ public class Manager {
 		currentWords = updated;
 	}
 
+	/*
+	 * Removes all words that contain invalid characters
+	 */
 	private void updateBlack(int index) {
 		char c = lastGuessed.charAt(index);
 		TreeMap<String, Integer> updated = new TreeMap<>();
@@ -118,6 +137,9 @@ public class Manager {
 		currentWords = updated;
 	}
 
+	/*
+	 * Removes words that do not contain a valid character or contain it at an invalid position
+	 */
 	private void updateYellow(int index) {
 		char c = lastGuessed.charAt(index);
 		TreeMap<String, Integer> updated = new TreeMap<>();
@@ -130,6 +152,9 @@ public class Manager {
 		currentWords = updated;
 	}
 
+	/*
+	 * Updates word list to contain words with enough repeating characters if the word contains repeated characters
+	 */
 	private void updateRepeat(int count, char ch) {
 		if (count <= 1) {
 			return;
@@ -160,7 +185,6 @@ public class Manager {
 			currentWords.remove(firstPick);
 			lastGuessed = firstPick;
 			guessesDone++;
-			//first.close();
 			return firstPick;
 		} else {
 			int max = 0;
@@ -181,7 +205,7 @@ public class Manager {
 
 	public void updateManager(String result) {
 		HashMap<Character, Integer> duplicates = new HashMap<>();
-		System.out.println("Updating and last guessed is: " + lastGuessed + " while result is: " + result);
+		System.out.println("\nUpdating and last guessed is: " + lastGuessed + " while result is: " + result + "\n");
 		for (int c = 0; c < 5; c++) {
 			if (result.charAt(c) == 'G') {
 				updateGreen(c);
@@ -245,12 +269,12 @@ public class Manager {
 			}
 		}
 
-		// System.out.println(currentWords);
+		// DEBUG: System.out.println(currentWords);
 		Set<Character> temp = new HashSet<>();
 		for (String word : currentWords.keySet()) {
 			temp.add(word.charAt(varChar));
 		}
-		// System.out.println(temp);
+		// DEBUG: System.out.println(temp);
 		// Making a new set of all words
 		TreeMap<String, Integer> emergencySet = getWeights(dictionary);
 		TreeMap<String, Integer> specialSet = new TreeMap<>();
@@ -267,7 +291,7 @@ public class Manager {
 				specialSet.put(word, weight);
 			}
 		}
-		// System.out.println(specialSet);
+		// DEBUG: System.out.println(specialSet);
 
 		int max = 0;
 		String bestGuess = "";

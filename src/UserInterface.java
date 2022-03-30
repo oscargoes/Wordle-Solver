@@ -1,6 +1,6 @@
 import java.util.*;
 
-//Created by Arya Agiwal and Oscar Goes 2022
+// Created by Arya Agiwal and Oscar Goes 2022
 
 public class UserInterface {
 
@@ -45,7 +45,7 @@ public class UserInterface {
 				}
 			}
 			if (gCount == 4 && tries <= 4) {
-				// System.out.println("Activating special case");
+				// DEBUG: System.out.println("Activating special case");
 				System.out.println("Best guess: " + game.specialUpdateManager(current));
 				tries++;
 				System.out.println(
@@ -91,9 +91,9 @@ public class UserInterface {
 				System.out.println("Made by Arya Agiwal and Oscar Goes :)");
 				System.exit(0);
 			}
-			System.out.println(game);
+			// DEBUG: System.out.println(game);
 			game.updateManager(current);
-			System.out.println(game);
+			// DEBUG: System.out.println(game);
 
 			// DEBUGGING
 			// System.out.println(game);
@@ -121,5 +121,5 @@ public class UserInterface {
 		}
 		return true;
 	}
-
+	
 }
